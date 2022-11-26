@@ -1,6 +1,11 @@
 
 package ahmad.hfhomology
 
+object Mathematica {
+  {
+    println("Mathematica not loaded. Some functionality will not work. See Mathematica.scala to enable Mathematica support.")
+    """
+// Uncomment the following if you have Mathematica setup. Also uncomment the mathematica line in build.sbt
 import com.wolfram.jlink._
 
 object Mathematica {
@@ -16,7 +21,7 @@ object Mathematica {
 
   def evaluateToString(cmd: String): String = {
     // bug in JLink, if the output has length 127 it returns "", workaround:
-    ml.evaluateToOutputForm(s"""s = ToString[InputForm[$cmd]]; If[StringLength[s] == 127, s <> " ", s]""", 0);
+    ml.evaluateToOutputForm(s's = ToString[InputForm[$cmd]]; If[StringLength[s] == 127, s <> " ", s]', 0);
   }
 
   def graphToFile(adjacency: Matrix, filename: String): Unit = {
@@ -27,3 +32,13 @@ object Mathematica {
   }
   
 }
+    """
+  }
+
+  def evaluateToString(cmd: String): String = ???
+
+  def graphToFile(adjacency: Matrix, filename: String): Unit = ???
+
+}
+
+

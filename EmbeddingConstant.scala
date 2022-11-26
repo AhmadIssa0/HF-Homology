@@ -586,8 +586,8 @@ object EmbeddingConstant {
       simpMat: Option[DMatrix]): Boolean = {
       simpMat match {
         case None => {
-          val b = FieldMatrix[Double](Vector(p :+ 1.)).transpose
-          val A = FieldMatrix[Double](simp).transpose.addConstantRows(1, 1.)
+          val b = FieldMatrix[Double](Vector(p :+ 1.0)).transpose
+          val A = FieldMatrix[Double](simp).transpose.addConstantRows(1, 1.0)
           // Equation we want to solve is A.x = b
           // then we check all coordinates of x are in range [0,1].
           //println(s"Equation: A=$A\n b=$b")
@@ -600,7 +600,7 @@ object EmbeddingConstant {
           }
         }
         case Some(x) => {
-          val b_trans = FieldMatrix[Double](Vector(p :+ 1.))
+          val b_trans = FieldMatrix[Double](Vector(p :+ 1.0))
           //  (x * b).transpose.mat(0).forall(coord => coord >= 0 && coord <= 1)
           (b_trans * x).mat(0).forall(coord => coord >= 0 && coord <= 1)
         }
@@ -609,7 +609,7 @@ object EmbeddingConstant {
 
     // Computes matrix ((A^t A)^-1 A^t)^t (see `isPointInSimp` function)
     def leastSquaresMatrix(simp: Simplex): DMatrix = {
-      val A = FieldMatrix[Double](simp).transpose.addConstantRows(1, 1.)
+      val A = FieldMatrix[Double](simp).transpose.addConstantRows(1, 1.0)
 
       (A.transpose * A).inverseApprox(tol) match {
         case Right(x) => A * x.transpose //x * A.transpose
@@ -680,7 +680,7 @@ object EmbeddingConstant {
 
         /*
         simp.permutations.forall({ perm =>
-          val partialSums = perm.scanLeft(Vector.fill(n+1)(0.))(addPoints).drop(1)
+          val partialSums = perm.scanLeft(Vector.fill(n+1)(0.0))(addPoints).drop(1)
           val subSimp = (0 until n+1)
             .map(i => partialSums(i).map(_ / (i+1))).toVector
           //println(s"subSimp: $subSimp")
@@ -712,10 +712,10 @@ object EmbeddingConstant {
       val simp = (0 until n).toVector
         .map(i => Vector.tabulate(n)({
           case `i` => c
-          case _ => 0.
+          case _ => 0.0
         }))
       
-      val partialSums = simp.scanLeft(Vector.fill(n)(0.))(addPoints).drop(1)
+      val partialSums = simp.scanLeft(Vector.fill(n)(0.0))(addPoints).drop(1)
       val subSimp = (0 until n)
             .map(i => partialSums(i).map(_ / (i+1))).toVector
       //println(s"cover: ${cover.map(_._1)}\nsimp: $subSimp")
